@@ -8,159 +8,277 @@
 	<!--<a href="{% url 'social:begin' 'facebook' %}?next={{ request.path }}">Login with Facebook</a>
     <a href="{% url 'social:begin' 'google-oauth2' %}?next={{ request.path }}">Login with Google</a>-->
 
-    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
-<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-
-
-<script src='https://api.mapbox.com/mapbox-gl-js/v1.4.1/mapbox-gl.js'></script>
+   
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<link href="/your-path-to-fontawesome/css/all.css" rel="stylesheet"> <!--load all styles -->
 <link href='https://api.mapbox.com/mapbox-gl-js/v1.4.1/mapbox-gl.css' rel='stylesheet' />
+<script src='https://api.mapbox.com/mapbox-gl-js/v1.4.1/mapbox-gl.js'></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+
+<script src="https://cdn.anychart.com/releases/v8/js/anychart-base.min.js?hcode=c11e6e3cfefb406e8ce8d99fa8368d33"></script>
+  <script src="https://cdn.anychart.com/releases/v8/js/anychart-ui.min.js?hcode=c11e6e3cfefb406e8ce8d99fa8368d33"></script>
+  <script src="https://cdn.anychart.com/releases/v8/js/anychart-exports.min.js?hcode=c11e6e3cfefb406e8ce8d99fa8368d33"></script>
+  <link href="https://cdn.anychart.com/releases/v8/css/anychart-ui.min.css?hcode=c11e6e3cfefb406e8ce8d99fa8368d33" type="text/css" rel="stylesheet">
+  <link href="https://cdn.anychart.com/releases/v8/fonts/css/anychart-font.min.css?hcode=c11e6e3cfefb406e8ce8d99fa8368d33" type="text/css" rel="stylesheet">
+  <style type="text/css">
+html, body, #container {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+</style>
 
 <!------ Include the above in your HEAD tag ---------->
 
-<div class="container">
+		<nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
+		  <div class="container">
+		    <a class="navbar-brand" href="#">
+		          <img src="https://scontent.fpei2-1.fna.fbcdn.net/v/t39.2081-0/75225024_2442836009087656_6124939662667546624_n.png?_nc_cat=101&_nc_oc=AQkKOALl_0oss-r576iOtC7wRhFkd7Yxc9M5crSJnip9uP408DKfPboejKkLSpm215Q&_nc_ht=scontent.fpei2-1.fna&oh=ab4ae8a645377f387d54dc4171f3b985&oe=5E1DCE42" width="100" height="100" alt="">
+		        </a>
+		    {% if not user.is_authenticated %}
+		    <div class="collapse navbar-collapse" id="navbarResponsive">
+		      <ul class="navbar-nav ml-auto">
+		        <li class="nav-item">
+		          <h1 class="text-light">POST LOCATION</h1>
+		        </li>
+		      </ul>
+		    </div>
+		    {% else %}
+		    <div class="collapse navbar-collapse" id="navbarResponsive">
+		      <ul class="navbar-nav ml-auto">
+		        <li class="nav-item">
+		          <h1 class="text-light">BIENVENIDO {{ user }}</h1>
+		        </li>
+		        <li class="nav-item">
+		          <a class="nav-link" href="#">Salir</a>
+		        </li>
+		      </ul>
+		    </div>
+		    {% endif %}
+		  </div>
+		</nav>
 		{% if not user.is_authenticated %}
-    	<h1 class="well">Login</h1>
-    	<div class="col-lg-12 well">
+    	<!--<div class="col-lg-12  well mt-2">
 				<div class="row">	
-					<div class="col-sm-4">
-						<div class="btn-group">
+					<div class="col-sm-12 center">
+						<div class="btn-group" style='width: 200px; height: 100px;'>
 							<a href="{% url 'social:begin' 'facebook' %}?next={{ request.path }}" type="button" class="btn btn-primary"><i class="fa fa-facebook" ></i>Sign in with Facebook</a>
 						</div>
 					</div>
-					<div class="col-sm-4">
-						<div class="btn-group">
-							<button type="button" class="btn btn-danger"><i class="fa fa-google-plus"></i>Sign in with GooglePlus</button>
-						</div>
-					</div>
-					<div class="col-sm-4">
-						<div class="btn-group">
-							<button type="button" class="btn btn-info"><i class="fa fa-linkedin"></i>Sign in with Linkedin</button>
-						</div>
-					</div>
 				</div>	
-		</div>
+		</div>-->
+		<div class="container-fluid h-100 mt-5 pt-5"> 
+    		<div class="row w-100 align-items-center">
+    			<div class="col text-center">
+    				<a style="background-color: #3b5998;" class="btn " href="{% url 'social:begin' 'facebook' %}?next={{ request.path }}"><i class="fa fa-facebook"></i> <h3 class="text-light">Sign in with Facebook</h3> </a>
+    			</div>	
+    		</div>
+    
+    
+    	</div>
     	{% else %}
-    	<h1 class="well">Bienvenido {{ user }}</h1>
-    	<a href="/salir/">LogOut</a>
-    	<div id='map' style='width: 100%; height: 350px;'></div>
-		<div id='menu'>
-			<input id='streets-v11' type='radio' name='rtoggle' value='streets' checked='checked'>
-			<label for='streets'>streets</label>
-			<input id='light-v10' type='radio' name='rtoggle' value='light'>
-			<label for='light'>light</label>
-			<input id='dark-v10' type='radio' name='rtoggle' value='dark'>
-			<label for='dark'>dark</label>
-			<input id='outdoors-v11' type='radio' name='rtoggle' value='outdoors'>
-			<label for='outdoors'>outdoors</label>
-			<input id='satellite-v9' type='radio' name='rtoggle' value='satellite'>
-			<label for='satellite'>satellite</label>
+    	
 		</div>
+		<div class="m-5">
+			<div id="DrpDwn">
+		        Año:<select id="DropDown_Year"><option>Año</option></select>
+		        Ciudad:<select id="DropDown_Ciudad"><option>Ciudad</option></select>
+		        Operador:<select id="DropDown_Kpi"><option>Operador</option></select>          
+			</div>
+
+			<div class="box-body">
+		  <div class="table table-responsive">
+		    <table id="tablaLaWebera" class="table table-hover">
+		      <thead>
+		        <tr>
+		          <th>AÑO</th>
+		          <th>CIUDAD</th>
+		          <th>OPERADOR</th>
+		          <th>UNIDAD</th>
+		          <th>VALOR</th>
+		          <th>KPI</th>
+		        </tr>
+		      </thead>
+		      <tbody id="tbodyProducto">
+
+		      </tbody>
+		    </table>
+		  </div>
+		 
+		</div>
+		</div>
+		 
+		<div id="container"></div>
+  <script>
+
+</script>
 		<script async defer src="https://connect.facebook.net/en_US/sdk.js"></script>
 		<script>
-		  window.fbAsyncInit = function() {
-		    FB.init({
-		      appId            : '397963834455773',
-		      autoLogAppEvents : true,
-		      xfbml            : true,
-		      version          : 'v4.0'
-		    });
-		    /*FB.api(
-			  '/me',
-			  'GET',
-			  {'access_token':'EAAFp8iz8dt0BAFhZAH8TUsTzxsjkko4sSWSNiDiKALrYCSbufWESZBZCp7Xt7NzMotQxqytElcmNiQNNKxW0yJ3ZAStfvYxtBJqjvO1A8q1ZAp5wuiZAnOsFsZAWkPjob2I0hia2saJwb2A3yKcUW0VOUwBx3HmjkyxIMnRnw7MGBJO3WPxYT4QBmwVbdjqVslesvMDawgyZAAZDZD',"fields":"name,posts{place}"},
-			  function(response) {
-			      // Insert your code here
-			      //console.log(response.posts.data[1].place.location.latitude);
-			      for (var paso = 0; paso < response.posts.data.length; paso++) {
-			      	if (response.posts.data[paso].place!=null){
-			      		// Se ejecuta 5 veces, con valores desde paso desde 0 hasta 4.
-					  console.log(response.posts.data[paso].place.location);
-					  var lat=response.posts.data[paso].place.location.latitude;
-					  var long=response.posts.data[paso].place.location.longitude;
-					  var marker = new mapboxgl.Marker()
-						  .setLngLat([long, lat])
-						  .addTo(map);
-			      	}
-					  // Se ejecuta 5 veces, con valores desde paso desde 0 hasta 4.
-					  //console.log(response.posts.data[paso].place.location);
-					  //var lat=response.posts.data[paso].place.location.latitude;
-					  //var long=response.posts.data[paso].place.location.longitude;
-					  //var marker = new mapboxgl.Marker()
-						//  .setLngLat([5.1, 3.2])
-						  //.addTo(map);
-					};
-			     //console.log(response.posts.data.length);
-			  }
-			);*/
-			FB.login(function(response) {
+		  $.ajax({
+			    url: "https://www.datos.gov.co/resource/vh9e-4ewi.json",
+			    type: "GET",
+			    data: {
+			      "$limit" : 5000,
+			      "$$app_token" : "6U41sKa8z8iRHbqIl6Njfmbgr"
+			    }
+			}).done(function(data) {
+			  //alert("Retrieved " + data.length + " records from the dataset!");
+			  //console.log(data);
+			  	//var medellin = data.filter( element => element.kpi =="Medellín")
+			  /*console.log(medellin);
+            for (  i = 0 ; i < data.length; i++){ //cuenta la cantidad de registros
+                //console.log(data[i]);
+			  	//console.log("DEPARTAMENTOS => ", departamento)
+			  	//var departamento = data[i].boyaca
+			  	//console.log(departamento);
 
-			    if (response.authResponse) {
+                var valor = '<tr>' +
+		        '<td>' + data[i].a_o + '</td>' +
+		        '<td>' + data[i].kpi + '</td>' +
+		        '<td>' + data[i].operador + '</td>' +
+		        '<td>' + data[i].unidad +'</td>' +
+		        '<td>' + data[i].valor +'</td>' +
+		        '<td>' + data[i].kpi +'</td>' +
+		        '</tr>';
+		      $("#tbodyProducto").append(valor)
+            }*/
 
-			        //Set global vars
-			        //fb_uid = response.authResponse.userID;
-			        var fb_token = response.authResponse.accessToken;
-			        console.log(response.authResponse.accessToken);
-			        FB.api(
-			        	'/me',
-			        	'GET',
-			        	{'access_token':fb_token, "fields":"friends{posts{place{location{latitude,longitude}}}}"},
-			        	function(response){
-			        		console.log(response.friends.data[0]);
-			        		for(var f=0; f<response.friends.data.length; f++){
-			        			for(var p=0; p<response.friends.data[f].posts.data.length; p++){
-			        				if (response.friends.data[f].posts.data[p].place!=null){
-			        				var lat=response.friends.data[f].posts.data[p].place.location.latitude;
-									var long=response.friends.data[f].posts.data[p].place.location.longitude;
-									var marker = new mapboxgl.Marker()
-									  .setLngLat([long, lat])
-									  .addTo(map);
-			        				}
-			        			};
-			        		};
+            g_YearsArray = [];
+			g_CiudadArray = [];
+			g_KpiArray = [];
+			g_vector=[];
+
+			
 
 
-
-			        		/*for (var paso = 0; paso < response.posts.data.length; paso++){
-			        			if (response.friends[0].posts.data[paso].place!=null){
-			        				var lat=response.friends[0].posts.data[paso].place.location.latitude;
-									var long=response.friends[0].posts.data[paso].place.location.longitude;
-									var marker = new mapboxgl.Marker()
-									  .setLngLat([long, lat])
-									  .addTo(map);
-			        			}
-			        		};*/
-			        	}
-			        )
-
-			    };
+			$.each(data, function(index) {
+			    var iYear = data[index].a_o;
+			    if ($.inArray(iYear, g_YearsArray) == -1) {
+			        g_YearsArray.push(iYear);
+			    }
 			});
-		  };
-		</script>
-		<script>
-			mapboxgl.accessToken = 'pk.eyJ1IjoiY2FtaWxvZ216IiwiYSI6ImNrMjExcG52cjA2eHAzaG81MWRiZ2Rua24ifQ.EmlyVuv0L8wQ1gdqspxm1Q';
-			var map = new mapboxgl.Map({
-			container: 'map',
-			style: 'mapbox://styles/mapbox/streets-v11'
+			g_YearsArray.sort();
+			$.each(g_YearsArray, function(i) {
+			    $("#DropDown_Year").append('<option value="' + g_YearsArray[i] + '">' + g_YearsArray[i] + '</option>');
 			});
-			// Add zoom and rotation controls to the map.
-			map.addControl(new mapboxgl.NavigationControl());
 
-			var layerList = document.getElementById('menu');
-			var inputs = layerList.getElementsByTagName('input');
-			 
-			function switchLayer(layer) {
-			var layerId = layer.target.id;
-			map.setStyle('mapbox://styles/mapbox/' + layerId);
-			}
-			 
-			for (var i = 0; i < inputs.length; i++) {
-			inputs[i].onclick = switchLayer;
-			}
+			$('#DropDown_Year').change(function() {
+			    var val = $(this).val();
+			    $('.YearClass').html(val);
+			    setCiudad(val);
+			});
+
+			$('#DropDown_Ciudad').change(function() {
+			    var val = $(this).val();
+			    $('.CiudadClass').html(val);
+			    setKpi(val);
+			});
+
+			$('#DropDown_Kpi').change(function() {
+			    var val = $(this).val();
+			    $('.OperadorClass').html(val);
+			});
+
+
+			    
+			    function setCiudad(theYear) {       
+			        $("#DropDown_Ciudad option").remove();
+			        $.each(data, function(index) {
+			            var sCiudad = data[index].ciudad;
+			            if ($.inArray(sCiudad, g_CiudadArray) == -1 && data[index].a_o == theYear) {
+			                g_CiudadArray.push(sCiudad);
+			            }
+			        });
+			        $.each(g_CiudadArray, function(i) {
+			            $("#DropDown_Ciudad").append('<option value="' + g_CiudadArray[i] + '">' + g_CiudadArray[i] + '</option>');
+			        });
+			    }
+
+			    function setKpi(theYear) {       
+			        $("#DropDown_Kpi option").remove();
+			        $.each(data, function(index) {
+			            var sKpi = data[index].kpi;
+			            if ($.inArray(sKpi, g_KpiArray) == -1 && data[index].ciudad == theYear) {
+			                g_KpiArray.push(sKpi);
+			            }
+			        });
+			        $.each(g_CiudadArray, function(i) {
+			            $("#DropDown_Kpi").append('<option value="' + g_KpiArray[i] + '">' + g_KpiArray[i] + '</option>');
+			        });
+			    }
+
+
+
+			            $('select').change(function () {
+			                $('#tbodyProducto tr').remove();
+			                $('#graficas').remove();
+			                var newRows = "";
+			                $.each(data, function (index) {
+			                    if (data[index].ciudad == $('#DropDown_Ciudad').val() && data[index].a_o == $('#DropDown_Year').val() && data[index].kpi == $('#DropDown_Kpi').val()) {
+			                        newRows += "<tr><td class='YearClass'>" + data[index].a_o + "</td>";
+			                        newRows += "<td class='CiudadClass'>" + data[index].ciudad + "</td>";
+			                        newRows += "<td class='OperadorClass'>" + data[index].operador + "</td>";
+			                        newRows += "<td class='SubOperadorClass'>" + data[index].unidad + "</td>";
+			                        newRows += "<td class='valorClass'>" + data[index].valor + "</td>";
+			                        newRows += "<td class='valorClass'>" + data[index].kpi + "</td>";
+
+			                       	
+
+			                       	g_vector[index]=[data[index].operador, data[index].valor];
+			                        
+			                    }
+
+			                });
+			                $('#tbodyProducto').append(newRows);
+			                //console.log(g_vector);
+			                datos=[];
+			                var j=0;
+			                for (var i = 0; i<g_vector.length; i++) {
+			                	if (g_vector[i]!=null) {
+			                		datos[j]=g_vector[i];
+			                		j++;
+			                	}
+			                }
+			                console.log(datos);
+
+			                anychart.onDocumentReady(function() {
+						      // create pie chart with passed data
+						      var chart = anychart.pie(
+						      	datos);
+
+						      // set chart title text settings
+						      chart.title('ACME Corp. apparel sales through different retail channels')
+						        // set chart radius
+						        .radius('43%')
+						        // create empty area in pie chart
+						        .innerRadius('30%');
+
+						      // set container id for the chart
+						      chart.container('container');
+						      // initiate chart drawing
+						      chart.draw();
+						    });
+
+			            });
+
+			});
+//g_vector=[['HOla', 3432], ['hjdj', 234]];
+
+//GRAFICAS_____________________________________________________
+		
+
 		</script>
     	{% endif %}
 		
-	</div>
+
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+
+
 
 </body>
 </html>
