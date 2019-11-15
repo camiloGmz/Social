@@ -80,7 +80,7 @@ html, body, #container {
     	</div>
     	{% else %}
     	
-		</div>
+		<div class="row"></div>
 		<div class="m-5">
 			<div id="DrpDwn">
 		        Año:<select id="DropDown_Year"><option>Año</option></select>
@@ -128,31 +128,12 @@ html, body, #container {
 			      "$$app_token" : "6U41sKa8z8iRHbqIl6Njfmbgr"
 			    }
 			}).done(function(data) {
-			  //alert("Retrieved " + data.length + " records from the dataset!");
-			  //console.log(data);
-			  	//var medellin = data.filter( element => element.kpi =="Medellín")
-			  /*console.log(medellin);
-            for (  i = 0 ; i < data.length; i++){ //cuenta la cantidad de registros
-                //console.log(data[i]);
-			  	//console.log("DEPARTAMENTOS => ", departamento)
-			  	//var departamento = data[i].boyaca
-			  	//console.log(departamento);
-
-                var valor = '<tr>' +
-		        '<td>' + data[i].a_o + '</td>' +
-		        '<td>' + data[i].kpi + '</td>' +
-		        '<td>' + data[i].operador + '</td>' +
-		        '<td>' + data[i].unidad +'</td>' +
-		        '<td>' + data[i].valor +'</td>' +
-		        '<td>' + data[i].kpi +'</td>' +
-		        '</tr>';
-		      $("#tbodyProducto").append(valor)
-            }*/
 
             g_YearsArray = [];
 			g_CiudadArray = [];
 			g_KpiArray = [];
 			g_vector=[];
+			g_titulo=[];
 
 			
 
@@ -232,7 +213,10 @@ html, body, #container {
 			                       	
 
 			                       	g_vector[index]=[data[index].operador, data[index].valor];
-			                        
+
+									//g_titulo=[];
+			                        g_titulo=[data[index].kpi, data[index].ciudad, data[index].unidad];
+			                        console.log(g_titulo);
 			                    }
 
 			                });
@@ -246,26 +230,75 @@ html, body, #container {
 			                		j++;
 			                	}
 			                }
-			                console.log(datos);
-			                anychart.onDocumentReady(function() {
-						      // create pie chart with passed data
-						      var chart = anychart.pie(
-						      	datos);
 
-			                
-						      // set chart title text settings
-						      chart.title('ACME Corp. apparel sales through different retail channels')
-						        // set chart radius
-						        .radius('43%')
-						        // create empty area in pie chart
-						        .innerRadius('30%');
+						    var unidades = '';
+						    if (g_titulo[2]=='Porcentaje') {
+						    	unidades='%'
+						    }else{
+						    	if (g_titulo[2]=='Milisegundos') {
+						    	unidades='ms'
+						    	}
+						    	else{
+						    		if (g_titulo[2]=='Segundos') {
+						    		unidades='s'
+						    		}
+						    		else{
+						    			if (g_titulo[2]=='Mega bits por segundo') {
+							    		unidades='Mbps'
+							    		}
+						    		}
+						    	}
+						    }
 
-						      // set container id for the chart
-						      chart.container('container');
-						      // initiate chart drawing
-						      chart.draw();
+						    
+						    
+							    
 
-						    });
+						    anychart.onDocumentReady(function () {
+							    // create column chart
+							    var chart = anychart.column();
+
+							    // turn on chart animation
+							    chart.animation(true);
+
+							    // set chart title text settings
+							    chart.title(g_titulo[0].concat(' en la ciudad de ').concat(g_titulo[1]));
+							    
+
+							    // create area series with passed data
+							    var series = chart.column(
+							    	datos);
+
+							    // set series tooltip settings
+							    series.tooltip().titleFormat('{%X}');
+
+							    series.tooltip()
+							            .position('center-top')
+							            .anchor('center-bottom')
+							            .offsetX(0)
+							            .offsetY(5)
+							            .format('{%Value}{groupsSeparator: } '.concat(unidades));
+
+							    // set scale minimum
+							    chart.yScale().minimum(0);
+
+							    // set yAxis labels formatter
+							    chart.yAxis().labels().format('{%Value}{groupsSeparator: } '.concat(unidades));
+
+							    // tooltips position and interactivity settings
+							    chart.tooltip().positionMode('point');
+							    chart.interactivity().hoverMode('by-x');
+
+							    // axes titles
+							    chart.xAxis().title('Operador');
+							    chart.yAxis().title(g_titulo[2]);
+
+							    // set container id for the chart
+							    chart.container('container');
+
+							    // initiate chart drawing
+							    chart.draw();
+							});
 
 			            });
 
