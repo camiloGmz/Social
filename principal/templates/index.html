@@ -110,7 +110,11 @@ html, body, #container {
 		</div>
 		</div>
 		 
-		<div id="container"></div>
+		<div id="container">
+			<div>
+				
+			</div>
+		</div>
   <script>
 
 </script>
@@ -213,7 +217,8 @@ html, body, #container {
 
 			            $('select').change(function () {
 			                $('#tbodyProducto tr').remove();
-			                $('#graficas').remove();
+			                $('#container div').remove();
+			                g_vector=[];
 			                var newRows = "";
 			                $.each(data, function (index) {
 			                    if (data[index].ciudad == $('#DropDown_Ciudad').val() && data[index].a_o == $('#DropDown_Year').val() && data[index].kpi == $('#DropDown_Kpi').val()) {
@@ -242,12 +247,12 @@ html, body, #container {
 			                	}
 			                }
 			                console.log(datos);
-
 			                anychart.onDocumentReady(function() {
 						      // create pie chart with passed data
 						      var chart = anychart.pie(
 						      	datos);
 
+			                
 						      // set chart title text settings
 						      chart.title('ACME Corp. apparel sales through different retail channels')
 						        // set chart radius
@@ -259,6 +264,7 @@ html, body, #container {
 						      chart.container('container');
 						      // initiate chart drawing
 						      chart.draw();
+
 						    });
 
 			            });
